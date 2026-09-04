@@ -37,30 +37,37 @@
 	let currentImageIndex: number;
 	const TOTAL_IMAGES = 4;
 
+	const heartMessage = ["Feliz", "Día", "de la", "Novia", "mi Niña"];
+	let currentMessageIndex = 0;
+	let floatingTexts: { sprite: THREE.Sprite; life: number; seed: number }[] = [];
+
 	// Raycaster for planets
 	const raycaster = new THREE.Raycaster();
 	const mouse = new THREE.Vector2();
 
 	let envelopeClosedTex: THREE.Texture;
-    let envelopeOpenTex: THREE.Texture;
-    let hoveredMesh: THREE.Mesh | null = null;
+	let envelopeOpenTex: THREE.Texture;
+	let hoveredMesh: THREE.Mesh | null = null;
 
 	function createTextTexture(text: string): THREE.CanvasTexture {
 		const canvas = document.createElement("canvas");
 		const ctx = canvas.getContext("2d")!;
 		canvas.width = 256;
-		canvas.height = 64;
+		canvas.height = 100;
 
 		ctx.fillStyle = "transparent";
 		ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-		ctx.font = "Bold 24px system-ui, sans-serif";
-		ctx.fillStyle = "#f472b6";
+		ctx.font = "Bold 32px system-ui, sans-serif";
+		ctx.fillStyle = "#fbcfe8";
 		ctx.textAlign = "center";
 		ctx.textBaseline = "middle";
-		ctx.shadowColor = "#ec4899";
-		ctx.shadowBlur = 8;
+		ctx.shadowColor = "#f472b6";
+		ctx.shadowBlur = 20;
+
 		ctx.fillText(text, canvas.width / 2, canvas.height / 2);
+        ctx.shadowBlur = 10;
+        ctx.fillText(text, canvas.width / 2, canvas.height / 2);
 
 		const texture = new THREE.CanvasTexture(canvas);
 		texture.needsUpdate = true;
@@ -141,12 +148,12 @@
 		const textureLoader = new THREE.TextureLoader();
 
 		envelopeClosedTex = textureLoader.load("/icon/letter-closed.png");
-        envelopeOpenTex = textureLoader.load("/icon/letter-open.png");
+		envelopeOpenTex = textureLoader.load("/icon/letter-open.png");
 
 		currentImageIndex = randomNum;
 
 		const randomImgPath = `/images/may${currentImageIndex}.png`;
-        const sunTexture = textureLoader.load(randomImgPath);
+		const sunTexture = textureLoader.load(randomImgPath);
 		const heartAlpha = createHeartAlphaTexture();
 
 		const sunGeometry = new THREE.PlaneGeometry(6, 6);
@@ -172,16 +179,16 @@
 		sunMesh.add(glowSprite);
 
 		planets.forEach((p, index) => {
-			const pGeo = new THREE.PlaneGeometry(1.5, 1.5); 
-            const pMat = new THREE.MeshBasicMaterial({
-                map: envelopeClosedTex,
-                side: THREE.DoubleSide,
-                transparent: true,
-                alphaTest: 0.1
-            });
+			const pGeo = new THREE.PlaneGeometry(1.5, 1.5);
+			const pMat = new THREE.MeshBasicMaterial({
+				map: envelopeClosedTex,
+				side: THREE.DoubleSide,
+				transparent: true,
+				alphaTest: 0.1
+			});
 
-            const mesh = new THREE.Mesh(pGeo, pMat);
-            mesh.userData = p;
+			const mesh = new THREE.Mesh(pGeo, pMat);
+			mesh.userData = p;
 
 			mesh.position.y = 0.2;
 
@@ -248,7 +255,7 @@
 				let extraScale = 0;
 
 				if (isPulsing) {
-					pulseProgress += 0.15
+					pulseProgress += 0.15;
 					extraScale = Math.sin(pulseProgress) * 0.8;
 
 					if (pulseProgress >= Math.PI) {
@@ -270,8 +277,8 @@
 				}
 
 				const baseScale = 1 + Math.sin(time * 3) * 0.05;
-                const finalScale = baseScale + extraScale;
-                sunMesh.scale.set(finalScale, finalScale, finalScale);
+				const finalScale = baseScale + extraScale;
+				sunMesh.scale.set(finalScale, finalScale, finalScale);
 			}
 
 			planetMeshes.forEach((item) => {
@@ -287,6 +294,28 @@
 				item.sprite.position.z = Math.sin(item.angle) * item.radius;
 				item.sprite.position.y = item.yOffset + Math.sin(time + item.angle) * 0.5;
 			});
+
+			for (let i = floatingTexts.length - 1; i >= 0; i--) {
+				const item = floatingTexts[i];
+
+				item.sprite.position.y += 0.03;
+                item.sprite.position.z += 0.02;
+
+				item.sprite.position.x = Math.sin(time * 2 + item.seed) * 1.5;
+
+				const expansion = 1 + (1.0 - item.life) * 1.5;
+                item.sprite.scale.set(8 * expansion, 3 * expansion, 1);
+
+				item.life -= 0.006;
+				item.sprite.material.opacity = Math.max(0, item.life);
+
+				if (item.life <= 0) {
+                    scene.remove(item.sprite);
+                    item.sprite.material.dispose();
+                    if (item.sprite.material.map) item.sprite.material.map.dispose();
+                    floatingTexts.splice(i, 1);
+                }
+			}
 
 			controls.update();
 			renderer.render(scene, camera);
@@ -336,8 +365,34 @@
 				if (!isPulsing) {
 					isPulsing = true;
 					pulseProgress = 0;
+
+					if (currentMessageIndex < heartMessage.length) {
+						const word = heartMessage[currentMessageIndex];
+						const texture = createTextTexture(word);
+						const material = new THREE.SpriteMaterial({
+							map: texture,
+							transparent: true,
+							opacity: 1,
+							depthWrite: false
+						});
+						const sprite = new THREE.Sprite(material);
+
+						sprite.position.set(0, 3, 0);
+						sprite.scale.set(8, 3, 1); 
+                        scene.add(sprite);
+
+						floatingTexts.push({ sprite, life: 1.0, seed: Math.random() * Math.PI * 2 });
+
+						currentMessageIndex++;
+
+						if (currentMessageIndex >= heartMessage.length) {
+							setTimeout(() => {
+								currentMessageIndex = 0;
+							}, 2000);
+						}
+					}
 				}
-				return
+				return;
 			}
 		}
 
@@ -350,55 +405,55 @@
 	}
 
 	function handlePointerMove(event: MouseEvent | TouchEvent) {
-        let clientX = 0;
-        let clientY = 0;
+		let clientX = 0;
+		let clientY = 0;
 
-        if (event instanceof MouseEvent) {
-            clientX = event.clientX;
-            clientY = event.clientY;
-        } else if (event.touches && event.touches.length > 0) {
-            clientX = event.touches[0].clientX;
-            clientY = event.touches[0].clientY;
-        }
+		if (event instanceof MouseEvent) {
+			clientX = event.clientX;
+			clientY = event.clientY;
+		} else if (event.touches && event.touches.length > 0) {
+			clientX = event.touches[0].clientX;
+			clientY = event.touches[0].clientY;
+		}
 
-        mouse.x = (clientX / window.innerWidth) * 2 - 1;
-        mouse.y = -(clientY / window.innerHeight) * 2 + 1;
+		mouse.x = (clientX / window.innerWidth) * 2 - 1;
+		mouse.y = -(clientY / window.innerHeight) * 2 + 1;
 
-        raycaster.setFromCamera(mouse, camera);
+		raycaster.setFromCamera(mouse, camera);
 
-        const intersects = raycaster.intersectObjects(planetMeshes.map((p) => p.mesh));
+		const intersects = raycaster.intersectObjects(planetMeshes.map((p) => p.mesh));
 
-        if (intersects.length > 0) {
-            const object = intersects[0].object as THREE.Mesh;
+		if (intersects.length > 0) {
+			const object = intersects[0].object as THREE.Mesh;
 
-            if (hoveredMesh !== object) {
-                if (hoveredMesh) {
+			if (hoveredMesh !== object) {
+				if (hoveredMesh) {
 					hoveredMesh.scale.set(1, 1, 1);
-                    const oldMat = hoveredMesh.material as THREE.MeshBasicMaterial;
-                    oldMat.map = envelopeClosedTex;
-                    oldMat.needsUpdate = true;
-                }
+					const oldMat = hoveredMesh.material as THREE.MeshBasicMaterial;
+					oldMat.map = envelopeClosedTex;
+					oldMat.needsUpdate = true;
+				}
 
-                hoveredMesh = object;
-                hoveredMesh.scale.set(1.2, 1.2, 1.2);
-                const newMat = hoveredMesh.material as THREE.MeshBasicMaterial;
-                newMat.map = envelopeOpenTex;
-                newMat.needsUpdate = true;
-                
-                if (canvasRef) canvasRef.style.cursor = "pointer";
-            }
-        } else {
-            if (hoveredMesh) {
-                hoveredMesh.scale.set(1, 1, 1);
-                const resetMat = hoveredMesh.material as THREE.MeshBasicMaterial;
-                resetMat.map = envelopeClosedTex;
-                resetMat.needsUpdate = true;
-                hoveredMesh = null;
-                
-                if (canvasRef) canvasRef.style.cursor = "grab";
-            }
-        }
-    }
+				hoveredMesh = object;
+				hoveredMesh.scale.set(1.2, 1.2, 1.2);
+				const newMat = hoveredMesh.material as THREE.MeshBasicMaterial;
+				newMat.map = envelopeOpenTex;
+				newMat.needsUpdate = true;
+
+				if (canvasRef) canvasRef.style.cursor = "pointer";
+			}
+		} else {
+			if (hoveredMesh) {
+				hoveredMesh.scale.set(1, 1, 1);
+				const resetMat = hoveredMesh.material as THREE.MeshBasicMaterial;
+				resetMat.map = envelopeClosedTex;
+				resetMat.needsUpdate = true;
+				hoveredMesh = null;
+
+				if (canvasRef) canvasRef.style.cursor = "grab";
+			}
+		}
+	}
 </script>
 
 <canvas
