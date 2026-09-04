@@ -1,0 +1,47 @@
+import type { PageLoad } from "./$types";
+
+export const load: PageLoad = async () => {
+    if (typeof window === "undefined") return {};
+
+    const imagesToPreload = [
+        "/images/may1.png",
+        "/images/may2.png",
+        "/images/may3.png",
+        "/images/may4.png",
+		`/images/together1.png`,
+		`/images/together2.png`,
+		`/images/together3.png`,
+		`/images/together4.png`
+    ];
+
+    const preloadImage = (src: string) => {
+        return new Promise((resolve, reject) => {
+            const img = new Image();
+            img.onload = resolve;
+            img.onerror = reject;
+            img.src = src;
+        });
+    };
+
+    const preloadAudio = (src: string) => {
+        return new Promise((resolve) => {
+            const audio = new Audio();
+            audio.addEventListener("canplaythrough", resolve, { once: true });
+            audio.addEventListener("error", resolve, { once: true });
+            audio.preload = "auto";
+            audio.src = src;
+            audio.load();
+        });
+    };
+
+    try {
+        await Promise.all([
+            ...imagesToPreload.map(preloadImage),
+            preloadAudio("/music/CarlaMorrison-Compartir.mp3")
+        ]);
+    } catch (e) {
+        console.warn("An error while preloading assets: ", e);
+    }
+
+    return {};
+};
