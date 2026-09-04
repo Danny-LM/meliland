@@ -1,3 +1,4 @@
+import { base } from "$app/paths";
 import type { AudioTrack, Letter } from "$lib/types";
 
 export interface PlanetData {
@@ -33,7 +34,7 @@ export const PLANET_DATA: PlanetData[] = [
         id: 1,
         title: "Mi Refugio",
         description: "Hace algunos años hicimos esa casita del fondo, jaja es curioso, no? Hace un mes iniciamos pero inconsciente y consciente ya lo sabíamos... sabíamos que queríamos vivir juntos y yo sé que un día así será, porque sin importar el lugar, tú te has vuelto mi refugio :D y quiero estar 80 billones de años contigo",
-        image: "./images/together1.png",
+        image: `${base}/images/together1.png`,
         orbitRadius: 8,
         speed: 0.005
     },
@@ -41,7 +42,7 @@ export const PLANET_DATA: PlanetData[] = [
         id: 2,
         title: "Meliland",
         description: "Hace mucho te di una plaza como un regalo de cumpleaños, pero esa plaza se perdió... bueno no te preocupes, ya lo viste hace unos días, te estoy construyendo una nueva y mejor :D Además no será solo una plaza, será una ciudad que va a crecer con todos los lugares que quiero ver contigo una vez superemos esos 900 km jajaja",
-        image: "./images/together2.png",
+        image: `${base}/images/together2.png`,
         orbitRadius: 13,
         speed: 0.003
     },
@@ -49,7 +50,7 @@ export const PLANET_DATA: PlanetData[] = [
         id: 3,
         title: "Sí, Acepto",
         description: "Curioso, no? En tu cumple así de la nada te llevé a ese altar que construí en el server, rodeados de amigos jaja y desde ese día oficialmente ya somos esposos al menos en el mundo del gaming pero... no puedo esperar a que llegue el momento de serlo IRL :D no solo en juegos yo espero que eso sea realidad, una realidad contigo",
-        image: "./images/together3.png",
+        image: `${base}/images/together3.png`,
         orbitRadius: 15,
         speed: 0.002
     },
@@ -57,7 +58,7 @@ export const PLANET_DATA: PlanetData[] = [
         id: 4,
         title: "Nuestra Gran Aventura",
         description: "Si bien nuestro viaje apenas comienza, ya estoy emocionado por todo lo que nos falta por vivir, experimentar juntos y navegar contigo hacia nuestro futuro, preparando todo para cuando llegue nuestra pequeña Meli y poder contarle todas las historias que vivimos juntos será una muy bonita vida pero... de momento solo te quiero decir... FELIZ DIA DE LA NOVIA mi niña hermosa :D TE AMOOO MUCHO MUCHO MUCHO MUCHO",
-        image: "./images/together4.png",
+        image: `${base}/images/together4.png`,
         orbitRadius: 18,
         speed: 0.003
     }
@@ -67,7 +68,7 @@ export const TRACKS: AudioTrack[] = [
     {
         songName: "Compartir",
         artist: "Carla Morrison",
-        audioFile: "/music/CarlaMorrison-Compartir.mp3"
+        audioFile: `${base}/music/CarlaMorrison-Compartir.mp3`
 
     }
 ];
