@@ -1,41 +1,25 @@
 <script lang="ts">
-	import LettersGrid from "../components/LettersGrid.svelte";
-	import LetterModal from "../components/LetterModal.svelte";
-	import NewAudioPlayer from "../components/NewAudioPlayer.svelte";
-	import type { AudioTrack, Letter } from "../types";
-	import { navigateTo } from "$lib/navigation";
-	import { onDestroy } from "svelte";
-	import { LETTER_DATA } from "../data/words";
+	import LettersGrid from '../components/LettersGrid.svelte';
+	import LetterModal from '../components/LetterModal.svelte';
+	import NewAudioPlayer from '../components/NewAudioPlayer.svelte';
+	import type { Letter } from '../types';
+	import { navigateTo } from '$lib/navigation';
+	import { onDestroy } from 'svelte';
+	import { LETTER_DATA } from '../data/words';
+	import { globalAudio } from '$lib/state/audio.svelte';
 
 	let selectedLetter = $state<Letter | null>(null);
 
-	let currentTrack = $state<AudioTrack | null>(null);
-	let isPlaying = $state(false);
-	let audioElement: HTMLAudioElement;
-
-	const availableYears = [...new Set(LETTER_DATA.map((l) => l.date.split("-")[0]))].sort(
+	const availableYears = [...new Set(LETTER_DATA.map((l) => l.date.split('-')[0]))].sort(
 		(a, b) => Number(b) - Number(a)
 	);
-
 	let selectedYear = $state(availableYears[0] || new Date().getFullYear().toString());
-
 	let filteredLetters = $derived(LETTER_DATA.filter((l) => l.date.startsWith(selectedYear)));
 
 	function openLetter(letter: Letter) {
 		selectedLetter = letter;
-
-		if (letter.track && letter.track.audioFile !== currentTrack?.audioFile) {
-			currentTrack = letter.track;
-			isPlaying = true;
-
-			setTimeout(() => {
-				if (audioElement) {
-					audioElement.play().catch((e) => {
-						console.warn("Bloqueado por el navegador", e);
-						isPlaying = false;
-					});
-				}
-			}, 50);
+		if (letter.track) {
+			globalAudio.setTrack(letter.track);
 		}
 	}
 
@@ -43,30 +27,14 @@
 		selectedLetter = null;
 	}
 
-	function handleToggle() {
-		if (!audioElement) return;
-		if (isPlaying) {
-			audioElement.pause();
-			isPlaying = false;
-		} else {
-			audioElement.play().catch(() => {});
-			isPlaying = true;
-		}
-	}
-
 	onDestroy(() => {
-		if (audioElement) {
-			audioElement.pause();
-			audioElement.src = "";
-		}
+		globalAudio.pause();
 	});
 </script>
 
-<audio bind:this={audioElement} src={currentTrack?.audioFile} loop preload="auto"></audio>
-
 <main class="h-screen w-full overflow-y-auto bg-[#05020a] p-6 pb-32 text-white md:p-10">
 	<button
-		onclick={() => navigateTo("/")}
+		onclick={() => navigateTo('/')}
 		class="mb-6 inline-block cursor-pointer text-sm tracking-widest text-pink-400/50 uppercase transition-colors hover:text-pink-400"
 	>
 		&larr; Volver al menu
@@ -80,9 +48,9 @@
 				<button
 					onclick={() => (selectedYear = year)}
 					class="cursor-pointer rounded-full px-6 py-1.5 text-sm font-bold tracking-widest transition-all duration-300
-                           {selectedYear === year
-						? "bg-pink-600 text-white shadow-lg shadow-pink-600/40"
-						: "border border-pink-500/30 bg-transparent text-pink-400/70 hover:bg-pink-900/40 hover:text-pink-200"}"
+                        {selectedYear === year
+						? 'bg-pink-600 text-white shadow-lg shadow-pink-600/40'
+						: 'border border-pink-500/30 bg-transparent text-pink-400/70 hover:bg-pink-900/40 hover:text-pink-200'}"
 				>
 					{year}
 				</button>
@@ -98,9 +66,7 @@
 		<LetterModal letter={selectedLetter} onClose={closeLetter} />
 	{/if}
 
-	{#if currentTrack}
-		<NewAudioPlayer track={currentTrack} {isPlaying} toggleAudio={handleToggle} />
-	{/if}
+	<NewAudioPlayer />
 </main>
 
 <style>
