@@ -1,17 +1,18 @@
+import { base } from "$app/paths";
 import type { PageLoad } from "./$types";
 
 export const load: PageLoad = async () => {
     if (typeof window === "undefined") return {};
 
     const imagesToPreload = [
-        "/images/may1.png",
-        "/images/may2.png",
-        "/images/may3.png",
-        "/images/may4.png",
-		`/images/together1.png`,
-		`/images/together2.png`,
-		`/images/together3.png`,
-		`/images/together4.png`
+        `${base}/images/may1.png`,
+        `${base}/images/may2.png`,
+        `${base}/images/may3.png`,
+        `${base}/images/may4.png`,
+        `${base}/images/together1.png`,
+        `${base}/images/together2.png`,
+        `${base}/images/together3.png`,
+        `${base}/images/together4.png`
     ];
 
     const preloadImage = (src: string) => {
@@ -37,7 +38,7 @@ export const load: PageLoad = async () => {
     try {
         await Promise.all([
             ...imagesToPreload.map(preloadImage),
-            preloadAudio("/music/CarlaMorrison-Compartir.mp3")
+            preloadAudio(`${base}/music/CarlaMorrison-Compartir.mp3`)
         ]);
     } catch (e) {
         console.warn("An error while preloading assets: ", e);

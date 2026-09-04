@@ -4,15 +4,12 @@ export interface AudioTrack {
     audioFile: string;
 }
 
-export type alignment =
-    | "left"
-    | "center"
-    | "right";
+export type Alignment = "left" | "center" | "right";
 
 export type ContentBlock =
     | { type: "text"; text: string }
-    | { type: "image"; src: string; alt?: string; align?: alignment; }
-    | { type: "video"; src: string; alt?: string; align?: alignment; };
+    | { type: "image"; src: string; alt?: string; align?: Alignment }
+    | { type: "video"; src: string; alt?: string; align?: Alignment };
 
 export interface Letter {
     id: string;
