@@ -1,9 +1,9 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import LettersGrid from '../components/LettersGrid.svelte';
 	import LetterModal from '../components/LetterModal.svelte';
 	import NewAudioPlayer from '../components/NewAudioPlayer.svelte';
 	import type { Letter } from '../types';
-	import { navigateTo } from '$lib/navigation';
 	import { onDestroy } from 'svelte';
 	import { LETTER_DATA } from '../data/words';
 	import { globalAudio } from '$lib/state/audio.svelte';
@@ -13,6 +13,7 @@
 	const availableYears = [...new Set(LETTER_DATA.map((l) => l.date.split('-')[0]))].sort(
 		(a, b) => Number(b) - Number(a)
 	);
+
 	let selectedYear = $state(availableYears[0] || new Date().getFullYear().toString());
 	let filteredLetters = $derived(LETTER_DATA.filter((l) => l.date.startsWith(selectedYear)));
 
@@ -33,14 +34,14 @@
 </script>
 
 <main class="h-screen w-full overflow-y-auto bg-[#05020a] p-6 pb-32 text-white md:p-10">
-	<button
-		onclick={() => navigateTo('/')}
+	<a
+		href={resolve('/')}
 		class="mb-6 inline-block cursor-pointer text-sm tracking-widest text-pink-400/50 uppercase transition-colors hover:text-pink-400"
 	>
 		&larr; Volver al menu
-	</button>
+	</a>
 
-	<h1 class="mb-4 text-center text-2xl font-bold text-pink-400 md:text-3xl">Nuestros Mensajes</h1>
+	<h1 class="mb-4 text-center text-2xl font-bold text-pink-400 md:text-3xl">Tus Cartitas</h1>
 
 	{#if availableYears.length > 1}
 		<div class="mb-8 flex flex-wrap justify-center gap-3">

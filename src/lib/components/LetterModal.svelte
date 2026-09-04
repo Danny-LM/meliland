@@ -1,8 +1,9 @@
 <script lang="ts">
-	import { X } from "@lucide/svelte";
-	import type { Letter } from "../types";
-	import { fade, fly } from "svelte/transition";
-	import { cubicOut } from "svelte/easing";
+	import { X } from '@lucide/svelte';
+	import type { Letter } from '../types';
+	import { formatFullDate } from '../utils/dateFormatter';
+	import { fade, fly } from 'svelte/transition';
+	import { cubicOut } from 'svelte/easing';
 
 	interface Props {
 		letter: Letter;
@@ -10,22 +11,17 @@
 	}
 
 	let { letter, onClose }: Props = $props();
-
-	function formatFullDate(dateString: string) {
-		const date = new Date(dateString + "T00:00:00");
-		return new Intl.DateTimeFormat("es-MX", {
-			day: "numeric",
-			month: "long",
-			year: "numeric"
-		}).format(date);
-	}
 </script>
 
 <div
 	class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm"
 	transition:fade={{ duration: 300 }}
 >
-	<div class="absolute inset-0 cursor-pointer" aria-hidden="true" onclick={onClose}></div>
+	<button
+		class="absolute inset-0 h-full w-full cursor-pointer border-none bg-transparent"
+		aria-label="Cerrar modal"
+		onclick={onClose}
+	></button>
 
 	<div
 		class="relative flex h-[85vh] w-full max-w-lg flex-col rounded-sm border border-[#e2d5c3] bg-[#F9F4E8] p-6 shadow-2xl md:p-8"
@@ -50,35 +46,34 @@
 				class="prose prose-stone flex max-w-none flex-col gap-4 font-serif text-base leading-relaxed text-[#4a3b32] md:text-lg"
 			>
 				{#each letter.content as block, i (i)}
-					{#if block.type === "text"}
+					{#if block.type === 'text'}
 						<p class="m-0 whitespace-pre-wrap">{block.text}</p>
-					{:else if block.type === "image"}
+					{:else if block.type === 'image'}
 						<div
 							class="flex w-full"
-							class:justify-start={block.align === "left"}
-							class:justify-center={!block.align || block.align === "center"}
-							class:justify-end={block.align === "right"}
+							class:justify-start={block.align === 'left'}
+							class:justify-center={!block.align || block.align === 'center'}
+							class:justify-end={block.align === 'right'}
 						>
 							<img
 								src={block.src}
-								alt={block.alt || "Imagen adjunta"}
+								alt={block.alt || 'Imagen adjunta'}
 								class="max-h-64 rounded-sm border-4 border-[#f1e6d0] object-cover shadow-sm sepia-20 transition-all duration-500 hover:sepia-0"
 							/>
 						</div>
-					{:else if block.type === "video"}
+					{:else if block.type === 'video'}
 						<div
 							class="flex w-full"
-							class:justify-start={block.align === "left"}
-							class:justify-center={!block.align || block.align === "center"}
-							class:justify-end={block.align === "right"}
+							class:justify-start={block.align === 'left'}
+							class:justify-center={!block.align || block.align === 'center'}
+							class:justify-end={block.align === 'right'}
 						>
 							<video
-                                src={block.src}
-                                controls
-                                class="max-h-64 rounded-sm border-4 border-[#f1e6d0] object-cover shadow-sm"
-                            >
-                                <track kind="captions" />
-                            </video>
+								src={block.src}
+								controls
+								class="max-h-64 rounded-sm border-4 border-[#f1e6d0] object-cover shadow-sm"
+								><track kind="captions" /></video
+							>
 						</div>
 					{/if}
 				{/each}
