@@ -4,6 +4,7 @@
 	import Loader from '$lib/components/Loader.svelte';
 	import { fade, scale } from 'svelte/transition';
 	import TulipMini from '$lib/components/flowers/TulipMini.svelte';
+	import favicon from '$lib/assets/favicon.svg';
 
 	let isLoading = $state(false);
 	let progress = $state(0);
@@ -42,6 +43,11 @@
 		await goto(resolve('/flowers'));
 	}
 </script>
+
+<svelte:head>
+    <title>Apoco si?</title>
+	<link rel="icon" href={favicon} />
+</svelte:head>
 
 <Loader onStart={handleStart} {isLoading} {progress} {destination} />
 

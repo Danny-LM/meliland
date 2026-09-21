@@ -6,6 +6,7 @@
 	import GalaxyCanvas from '$lib/components/GalaxyCanvas.svelte';
 	import { WORDS_DICT, PLANET_DATA, TRACKS, type PlanetData } from '$lib/data/words';
 	import { globalAudio } from '$lib/state/audio.svelte';
+	import favicon from '$lib/assets/favicon.svg';
 
 	let selectedPlanet = $state<PlanetData | null>(null);
 	let randomNum = $state(Math.floor(Math.random() * 4) + 1);
@@ -19,6 +20,11 @@
 		globalAudio.pause();
 	});
 </script>
+
+<svelte:head>
+    <title>Your Galaxy</title>
+	<link rel="icon" href={favicon} />
+</svelte:head>
 
 <main class="relative h-screen w-full overflow-hidden bg-[#05020a]">
 	<a

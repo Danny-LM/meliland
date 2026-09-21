@@ -9,6 +9,7 @@
 	import { fade, scale, fly } from 'svelte/transition';
 	import type { Letter } from '$lib/types';
 	import Envelope from '$lib/components/Envelope.svelte';
+	import tulip from '$lib/assets/tulip.svg';
 
 	type SceneState = 'idle' | 'falling' | 'growing' | 'ready';
 
@@ -61,6 +62,11 @@
 		}, 800);
 	}
 </script>
+
+<svelte:head>
+    <title>Your Flowers</title>
+	<link rel="icon" href={tulip} />
+</svelte:head>
 
 <div
 	class="page-cursor relative flex h-dvh w-full flex-col items-center justify-end overflow-hidden bg-[#FFF6E3] text-[#2E2412]"
