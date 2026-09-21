@@ -30,7 +30,7 @@
 				type: 'image',
 				src: 'https://avatars.fastly.steamstatic.com/dccc6f514456e51a938bc9616586dde886277c69_full.jpg',
 				alt: 'apoco si?',
-				align: "center"
+				align: 'center'
 			},
 			{
 				type: 'text',
@@ -40,11 +40,11 @@
 				type: 'image',
 				src: 'https://i.pinimg.com/originals/b9/24/a8/b924a80f127186af122ca4a3809784be.jpg',
 				alt: 'tulipanes amarillos',
-				align: "center"
+				align: 'center'
 			},
 			{
 				type: 'text',
-				text: 'Y quién sabe... quizás algún día tus flores virtuales se vuelvan reales :D',
+				text: 'Y quién sabe... quizás algún día tus flores virtuales se vuelvan reales :D'
 			}
 		]
 	};

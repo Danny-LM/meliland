@@ -1,6 +1,6 @@
 <script lang="ts">
-	import LetterCard from "./LetterCard.svelte";
-	import type { Letter } from "../types";
+	import LetterCard from './LetterCard.svelte';
+	import type { Letter } from '../types';
 
 	interface Props {
 		letters: Letter[];

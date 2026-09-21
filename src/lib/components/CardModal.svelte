@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { Heart } from "@lucide/svelte";
-	import type { PlanetData } from "../data/words";
+	import { Heart } from '@lucide/svelte';
+	import type { PlanetData } from '../data/words';
 
 	interface Props {
 		planet: PlanetData | null;
@@ -32,7 +32,6 @@
 		<div
 			class="relative flex w-full max-w-md flex-col gap-4 rounded-2xl border border-pink-500/40 bg-[#12071f] p-6 text-pink-100 shadow-2xl shadow-pink-500/20"
 		>
-
 			{#if planet.image}
 				<div
 					class="h-48 w-full overflow-hidden rounded-xl border border-pink-500/20 bg-pink-950/30"
@@ -53,12 +52,12 @@
 			<button
 				onclick={onClose}
 				disabled={countdown > 0}
-                class="mt-2 w-full rounded-xl border border-pink-500/50 py-2.5 font-medium transition-all
-                       {countdown > 0 
-                           ? "cursor-not-allowed bg-pink-900/20 text-pink-400/50" 
-                           : "cursor-pointer bg-pink-600/30 text-pink-200 hover:bg-pink-600/50"}"
+				class="mt-2 w-full rounded-xl border border-pink-500/50 py-2.5 font-medium transition-all
+                       {countdown > 0
+					? 'cursor-not-allowed bg-pink-900/20 text-pink-400/50'
+					: 'cursor-pointer bg-pink-600/30 text-pink-200 hover:bg-pink-600/50'}"
 			>
-				{countdown > 0 ? `Espera (${countdown})...` : "Cerrar carta"}
+				{countdown > 0 ? `Espera (${countdown})...` : 'Cerrar carta'}
 			</button>
 		</div>
 	</div>
