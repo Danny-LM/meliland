@@ -64,14 +64,13 @@
 </script>
 
 <svelte:head>
-    <title>Your Flowers</title>
+	<title>Your Flowers</title>
 	<link rel="icon" href={tulip} />
 </svelte:head>
 
 <div
-	class="page-cursor relative flex h-dvh w-full flex-col items-center justify-end overflow-hidden bg-[#FFF6E3] text-[#2E2412]"
+	class="page-cursor relative flex h-dvh w-full flex-col overflow-hidden bg-[#FFF6E3] text-[#2E2412]"
 >
-	<!-- MENU -->
 	<a
 		href={resolve('/')}
 		class="absolute top-6 left-6 z-50 inline-block cursor-pointer text-xs font-semibold tracking-widest text-[#8b7355]/70 uppercase transition-colors hover:text-[#5c4033] sm:text-sm"
@@ -80,66 +79,67 @@
 	</a>
 
 	<!-- TITLE -->
-	{#if sceneState === 'ready'}
-		<div
-			in:fly={{ y: -30, duration: 1000, delay: 200 }}
-			class="pointer-events-none absolute top-[8vh] z-30 flex flex-col items-center gap-1 px-4 text-center sm:top-16"
-		>
-			<h1 class="text-3xl font-bold tracking-tight sm:text-4xl">💛 PARA TI MI AMOOOR 💛</h1>
-			<p class="text-sm font-medium opacity-75 sm:text-base">
-				porque te lo mereces y mucho mas por iluminar mis dias
-			</p>
-		</div>
-	{/if}
-
-	<!-- GRASS -->
-	<div class="pointer-events-none absolute bottom-0 z-10 h-24 w-full bg-[#4E8B49]"></div>
-
-	<!-- SEED -->
-	{#if sceneState === 'idle' || sceneState === 'falling'}
-		<div class="pointer-events-auto absolute inset-0 z-30 flex items-center justify-center pb-24">
-			<Seed isFalling={sceneState === 'falling'} onPlant={handlePlant} />
-		</div>
-	{/if}
-
-	<!-- TULIP -->
-	<div
-		class="pointer-events-none absolute bottom-0 z-0 flex h-[70vh] w-full items-end justify-center"
-	>
-		{#if sceneState === 'growing' || sceneState === 'ready'}
+	<div class="z-40 flex shrink-0 flex-col items-center px-4 pt-16 sm:pt-12">
+		{#if sceneState === 'ready'}
 			<div
-				in:scale={{ duration: 1000, start: 0.8 }}
-				out:fade
-				class="absolute bottom-16 flex items-end justify-center"
+				in:fly={{ y: -30, duration: 1000, delay: 200 }}
+				class="pointer-events-none flex flex-col items-center gap-1 text-center"
 			>
-				<Tulip isReady={sceneState === 'growing' || sceneState === 'ready'} />
+				<h1 class="text-2xl font-bold tracking-tight sm:text-4xl">💛 PARA TI MI AMOOOR 💛</h1>
+				<p class="text-xs font-medium opacity-75 sm:text-base">
+					porque te lo mereces y mucho mas por iluminar mis dias
+				</p>
 			</div>
 		{/if}
 	</div>
 
-	<!-- MINI TULIPS -->
-	{#if sceneState === 'ready'}
-		<div
-			class="pointer-events-none absolute bottom-6 z-20 flex w-full flex-wrap justify-center gap-2 px-4"
-		>
-			{#each minisArray as index (index)}
-				<TulipMini {index} />
-			{/each}
+	<div class="z-20 flex min-h-0 w-full flex-1 flex-col">
+		<div class="relative flex min-h-0 flex-1 items-center justify-center">
+			{#if sceneState === 'ready'}
+				<div
+					in:fly={{ y: 20, duration: 800, delay: 500 }}
+					class="pointer-events-auto scale-[0.70] sm:scale-85 md:scale-100"
+				>
+					<Envelope
+						onclick={() => (isLetterOpen = true)}
+						heartColor="#E8AD21"
+						outlineColor="#FFD751"
+						bodyColor="#FFF6E3"
+					/>
+				</div>
+			{/if}
 		</div>
-	{/if}
 
-	<!-- LETTER BUTTON -->
-	{#if sceneState === 'ready'}
-		<div
-			in:fly={{ y: 20, duration: 800, delay: 500 }}
-			class="pointer-events-auto absolute top-[16vh] z-40 flex w-full justify-center px-4 sm:top-[14vh]"
-		>
-			<Envelope
-				onclick={() => (isLetterOpen = true)}
-				heartColor="#E8AD21"
-				outlineColor="#FFD751"
-				bodyColor="#FFF6E3"
-			/>
+		<div class="relative flex min-h-0 flex-[1.3] items-end justify-center">
+			{#if sceneState === 'growing' || sceneState === 'ready'}
+				<div
+					in:scale={{ duration: 1000, start: 0.8 }}
+					out:fade
+					class="origin-bottom translate-y-8 scale-[0.75] sm:scale-[0.80] md:scale-[0.85]"
+				>
+					<Tulip isReady={sceneState === 'growing' || sceneState === 'ready'} />
+				</div>
+			{/if}
+		</div>
+	</div>
+
+	<!-- GRASS -->
+	<div class="relative z-30 h-24 w-full shrink-0 bg-[#4E8B49]">
+		{#if sceneState === 'ready'}
+			<div
+				class="pointer-events-none absolute bottom-6 flex w-full flex-wrap justify-center gap-2 px-4"
+			>
+				{#each minisArray as index (index)}
+					<TulipMini {index} />
+				{/each}
+			</div>
+		{/if}
+	</div>
+
+	<!-- SEED -->
+	{#if sceneState === 'idle' || sceneState === 'falling'}
+		<div class="pointer-events-auto absolute inset-0 z-50 flex items-center justify-center pb-24">
+			<Seed isFalling={sceneState === 'falling'} onPlant={handlePlant} />
 		</div>
 	{/if}
 

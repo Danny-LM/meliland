@@ -22,7 +22,7 @@
 </script>
 
 <svelte:head>
-    <title>Your Galaxy</title>
+	<title>Your Galaxy</title>
 	<link rel="icon" href={favicon} />
 </svelte:head>
 

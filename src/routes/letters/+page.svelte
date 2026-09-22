@@ -4,7 +4,7 @@
 </script>
 
 <svelte:head>
-    <title>Your Letters</title>
+	<title>Your Letters</title>
 	<link rel="icon" href={favicon} />
 </svelte:head>
 

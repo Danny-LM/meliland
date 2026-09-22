@@ -45,7 +45,7 @@
 </script>
 
 <svelte:head>
-    <title>Apoco si?</title>
+	<title>Apoco si?</title>
 	<link rel="icon" href={favicon} />
 </svelte:head>
 
