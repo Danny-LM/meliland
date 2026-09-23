@@ -46,12 +46,13 @@
 		<!-- ======================================== -->
 		<!-- FLAP OPEN -->
 		<!-- ======================================== -->
+		 <!-- FLAP OPEN -->
 		<svg
 			width="200"
 			height="200"
 			viewBox="0 0 200 200"
 			fill="none"
-			class="pointer-events-none absolute inset-0 z-10 opacity-0 transition-opacity duration-150 ease-in"
+			class="pointer-events-none absolute inset-0 z-10 transition-opacity duration-150 ease-in"
 			class:opacity-100={isHovered}
 			class:opacity-0={!isHovered}
 			xmlns="http://www.w3.org/2000/svg"
@@ -94,7 +95,8 @@
 			height="200"
 			viewBox="0 0 200 200"
 			fill="none"
-			class="absolute inset-0 z-20 translate-y-3 opacity-0 transition-all duration-150 ease-in"
+			class="absolute inset-0 z-20 transition-all duration-150 ease-in"
+			class:translate-y-3={!isHovered}
 			class:translate-y-0={isHovered}
 			class:opacity-100={isHovered}
 			class:opacity-0={!isHovered}
@@ -150,8 +152,9 @@
 			height="200"
 			viewBox="0 0 200 200"
 			fill="none"
-			class="pointer-events-none absolute inset-0 z-40 opacity-100 transition-opacity duration-200 ease-out"
+			class="pointer-events-none absolute inset-0 z-40 transition-opacity duration-200 ease-out"
 			class:opacity-0={isHovered}
+			class:opacity-100={!isHovered}
 			xmlns="http://www.w3.org/2000/svg"
 		>
 			<path
