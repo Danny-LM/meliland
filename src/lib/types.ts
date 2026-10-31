@@ -8,6 +8,7 @@ export type Alignment = 'left' | 'center' | 'right';
 
 export type ContentBlock =
 	| { type: 'text'; text: string }
+	| { type: 'heading'; text: string }
 	| { type: 'image'; src: string; alt?: string; align?: Alignment }
 	| { type: 'video'; src: string; alt?: string; align?: Alignment };
 

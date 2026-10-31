@@ -61,6 +61,8 @@
 								class="max-h-64 rounded-sm border-4 border-[#f1e6d0] object-cover shadow-sm sepia-20 transition-all duration-500 hover:sepia-0"
 							/>
 						</div>
+					{:else if block.type === 'heading'}
+						<h3 class="mt-4 mb-0 font-serif text-lg font-bold text-[#5c4033] md:text-xl">{block.text}</h3>
 					{:else if block.type === 'video'}
 						<div
 							class="flex w-full"
